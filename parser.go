@@ -54,14 +54,14 @@ func (parser *parser) parseField(key string, rawField interface{}) (ParsedField,
 	return field, err
 }
 
-const GoPrefix = "_go:"
+const goPrefix = "_go:"
 
 func (parser *parser) parseStringField(key, value string) (ParsedField, error) {
 	if parser.isStaticString(value) {
 		return newStaticField(key, value), nil
 	}
 
-	value = value[len(GoPrefix):]
+	value = value[len(goPrefix):]
 	if parser.isValidKeywordString(value) {
 		fn := parser.keywordSet[value]
 		return fn(key, value)
@@ -75,7 +75,7 @@ func (parser *parser) parseStringField(key, value string) (ParsedField, error) {
 }
 
 func (parser *parser) isStaticString(value string) bool {
-	return !strings.Contains(value, GoPrefix)
+	return !strings.Contains(value, goPrefix)
 }
 
 func (parser *parser) isValidKeywordString(value string) bool {

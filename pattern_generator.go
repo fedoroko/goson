@@ -46,9 +46,9 @@ func (generator generator) Generate() string {
 }
 
 // Character pool: 52 letters, 10 digits and 19 specials.
-const BytePoolLetters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-const BytePoolDigits = "0123456789"
-const BytePoolSpecials = "~!@#$%^&*()_+-={}[]"
+const bytePoolLetters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const bytePoolDigits = "0123456789"
+const bytePoolSpecials = "~!@#$%^&*()_+-={}[]"
 
 // generate takes a random character from a specific byte pool and insert it into a slice of bytes.
 // At the end shuffling a slice of bytes.
@@ -58,19 +58,19 @@ func (generator generator) generate() string {
 
 	var i int
 	for j := 0; j < generator.pattern.letters; j++ {
-		char := getRandomCharFromSource(BytePoolLetters)
+		char := getRandomCharFromSource(bytePoolLetters)
 		bytes[i] = char
 		i++
 	}
 
 	for j := 0; j < generator.pattern.digits; j++ {
-		char := getRandomCharFromSource(BytePoolDigits)
+		char := getRandomCharFromSource(bytePoolDigits)
 		bytes[i] = char
 		i++
 	}
 
 	for j := 0; j < generator.pattern.specials; j++ {
-		char := getRandomCharFromSource(BytePoolSpecials)
+		char := getRandomCharFromSource(bytePoolSpecials)
 		bytes[i] = char
 		i++
 	}
@@ -154,17 +154,17 @@ func locatePattern(raw string) (int, int) {
 }
 
 const (
-	PatternLegendLetter = iota
-	PatternLegendDigit
-	PatternLegendSpecial
+	patternLegendLetter = iota
+	patternLegendDigit
+	patternLegendSpecial
 )
 
-const PatternSeparator = "/"
-const PatternMaxLen = 64
+const patternSeparator = "/"
+const patternMaxLen = 64
 
 func parsePattern(body string) (strPattern, error) {
 	var pattern strPattern
-	exploded := strings.Split(body, PatternSeparator)
+	exploded := strings.Split(body, patternSeparator)
 	if len(exploded) > 3 {
 		return pattern, errors.New("can't split pattern correctly")
 	}
@@ -175,23 +175,23 @@ func parsePattern(body string) (strPattern, error) {
 			return pattern, err
 		}
 		switch i {
-		case PatternLegendLetter:
+		case patternLegendLetter:
 			pattern.letters = num
 			pattern.length += num
-		case PatternLegendDigit:
+		case patternLegendDigit:
 			pattern.digits = num
 			pattern.length += num
-		case PatternLegendSpecial:
+		case patternLegendSpecial:
 			pattern.specials = num
 			pattern.length += num
 		}
 	}
 
-	if pattern.length > PatternMaxLen {
+	if pattern.length > patternMaxLen {
 		return pattern, errors.New(
 			fmt.Sprintf(
 				"max pattern len is %d. actual: %d",
-				PatternMaxLen,
+				patternMaxLen,
 				pattern.length,
 			),
 		)
